@@ -5,7 +5,12 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -100,4 +105,25 @@ public class UserController {
 		
 		System.out.println(id);
 	}
+	
+	@GetMapping("/me1")
+	@ApiOperation(value="获取用户名方式一")
+	private Object getName1() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
+	
+	//MVC自动封装了
+	@GetMapping("/me2")
+	@ApiOperation(value="获取用户名方式二")
+	private Object getName2(Authentication authentication) {
+		return authentication;
+	}
+	
+	@GetMapping("/me3")
+	@ApiOperation(value="获取用户名方式三")
+	private Object getName3(@AuthenticationPrincipal UserDetails user) {
+		return user;
+	}
+	
+	
 }

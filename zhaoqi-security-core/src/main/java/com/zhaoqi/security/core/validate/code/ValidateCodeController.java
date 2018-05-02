@@ -74,7 +74,7 @@ public class ValidateCodeController {
             g.setColor(getRandColor(100, 150));// 调用函数出来的颜色相同，可能是因为种子太接近，所以只能直接生成
             g.drawString(rand, 15 * i + 6, 16);
         }
-          for(int i=0;i<(random.nextInt(5)+5);i++){  
+        for(int i=0;i<(random.nextInt(5)+5);i++){  
                 g.setColor(new Color(random.nextInt(255)+1,random.nextInt(255)+1,random.nextInt(255)+1));  
                 g.drawLine(random.nextInt(100),random.nextInt(30),random.nextInt(100),random.nextInt(30));  
         }   

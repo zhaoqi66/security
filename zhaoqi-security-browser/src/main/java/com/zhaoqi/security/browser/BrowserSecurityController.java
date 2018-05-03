@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zhaoqi.security.browser.support.SimpleResponse;
+import com.zhaoqi.security.core.properties.SecurityProperties;
 
 @RestController
 public class BrowserSecurityController {
@@ -28,6 +30,12 @@ public class BrowserSecurityController {
 	private RequestCache requestCache = new HttpSessionRequestCache();
 	//spring重定向
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+	
+	@Autowired
+	private SecurityProperties secutiryProperties;
+	
+	
+	
 	//当需要身份认证时，跳转到这里
 	@RequestMapping("/suthentication/require")
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
@@ -37,7 +45,7 @@ public class BrowserSecurityController {
 		if (savedRequest != null) {
 			String targetUrl =  savedRequest.getRedirectUrl();
 			logger.info("引发跳转的请求是： "+targetUrl);
-			redirectStrategy.sendRedirect(request, response, "");
+			redirectStrategy.sendRedirect(request, response, secutiryProperties.getBrowser().getLoginPage());
 		}
 		return new SimpleResponse("访问的服务需要认证，请引导用户到登陆页");
 	}
